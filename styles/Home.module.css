@@ -7,6 +7,10 @@
   color: black;
 }
 
+.lotteryInfo a {
+  font-size: 0.9em;
+}
+
 .footer {
   display: flex;
   flex: 1;
