@@ -5,22 +5,37 @@ import "bulma/css/bulma.css";
 import { useState } from "react";
 
 export default function Home() {
+  const [error, setError] = useState("");
   const [web3, setWeb3] = useState();
+  const [address, setAddress] = useState();
+
   const connectWalletHandler = async () => {
-    //check metamask is installed
-    if (typeof window !== "undefine" && typeof window.ethereum) {
+    /* check if MetaMask is installed */
+    if (
+      typeof window !== "undefined" &&
+      typeof window.ethereum !== "undefined"
+    ) {
       try {
-        // request wallet connection
+        /* request wallet connect */
         await window.ethereum.request({ method: "eth_requestAccounts" });
-        // create web3 instance and set to state
+        /* create web3 instance and set to state var */
         const web3 = new Web3(window.ethereum);
+        /* get list of wallet accounts */
+        const accounts = await web3.eth.getAccounts();
+        /* set Account 1 to React state var */
+        setAddress(accounts[0]);
+        /* set web3 instance */
         setWeb3(web3);
+
+        /* create local contract copy */
+        // const lc = lotteryContract(web3)
+        // setLotteryContract(lc)
       } catch (err) {
-        console.log(err.message);
+        setError(err.message);
       }
     } else {
-      //check metamask  is not installed
-      console.log("Please Install metamask");
+      // meta mask is not installed
+      console.log("Please install MetaMask");
     }
   };
   return (
